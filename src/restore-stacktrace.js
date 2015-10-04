@@ -21,10 +21,15 @@ function restoreStacktrace(options) {
   lines.forEach(function(stackLine) {
 
     if (stackLine.trim().indexOf('at ') === 0) {
-      var sourceUrl = stackLine.substring(
-        stackLine.lastIndexOf('(') + 1,
-        stackLine.lastIndexOf(')')
-      );
+
+      var sourceUrl = stackLine.trim().match(/^at http(s?):\/\//) ?
+        // 1) at http://something/bundle.js:1:1
+        stackLine.substring('at '.length) :
+        // 2) at bla.bla (http://something/bundle.js:1:1)
+        stackLine.substring(
+          stackLine.lastIndexOf('(') + 1,
+          stackLine.lastIndexOf(')')
+        );
 
       var bundleFile = sourceUrl.substring(
         sourceUrl.lastIndexOf('/') + 1,
@@ -42,6 +47,10 @@ function restoreStacktrace(options) {
       ));
 
       var sourceMap = sourceMaps[bundleFile];
+
+      if (sourceMap == null) {
+        throw new Error('no sourcemap for bundle "' + bundleFile + '" [line: "' + stackLine + '"]');
+      }
 
       var originalPosition = sourceMap.originalPositionFor({
         line: sourceLine,

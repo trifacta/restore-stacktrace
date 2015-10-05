@@ -19,13 +19,17 @@ function restoreStacktrace(options) {
   var result = '';
 
   lines.forEach(function(stackLine) {
+    stackLine = stackLine.trim();
 
-    if (stackLine.trim().indexOf('at ') === 0) {
+    if (stackLine.indexOf('at ') === 0) {
 
-      var sourceUrl = stackLine.trim().match(/^at http(s?):\/\//) ?
-        // 1) at http://something/bundle.js:1:1
+      // isOnlyUrl
+      // true: " at http://something/bundle.js:1:1"
+      // false: " at bla.bla (http://something/bundle.js:1:1)"
+      var isOnlyUrl = stackLine.match(/^at http(s?):\/\//);
+
+      var sourceUrl = isOnlyUrl ?
         stackLine.substring('at '.length) :
-        // 2) at bla.bla (http://something/bundle.js:1:1)
         stackLine.substring(
           stackLine.lastIndexOf('(') + 1,
           stackLine.lastIndexOf(')')
@@ -65,6 +69,9 @@ function restoreStacktrace(options) {
       }
 
       result += '  at ';
+      if (!isOnlyUrl) {
+        result += stackLine.substring('at '.length, stackLine.lastIndexOf('('));
+      }
       result += originalPosition.name;
       result += ' (' + source + ':' + originalPosition.line + ':' + originalPosition.column + ')';
     } else {

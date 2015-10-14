@@ -1,7 +1,18 @@
 {
   "name": "restore-stacktrace",
   "version": "0.0.1",
-  "private": true,
+  "description": "A utility for restoring minified stack traces",
+  "license": {
+    "type": "Apache License Version 2.0",
+    "url": "https://github.com/trifacta/restore-stacktrace/blob/dev/LICENSE"
+  },
+  "author": {
+    "name": "Lars Grammel"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trifacta/restore-stacktrace"
+  },
   "main": "src/main.js",
   "dependencies": {
     "commander": "2.8.1",

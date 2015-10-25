@@ -53,7 +53,8 @@ function restoreStacktrace(options) {
       var sourceMap = sourceMaps[bundleFile];
 
       if (sourceMap == null) {
-        throw new Error('no sourcemap for bundle "' + bundleFile + '" [line: "' + stackLine + '"]');
+        result += '  [original] ' + stackLine;
+        return;
       }
 
       var originalPosition = sourceMap.originalPositionFor({

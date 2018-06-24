@@ -53,7 +53,7 @@ function restoreStacktrace(options) {
       var sourceMap = sourceMaps[bundleFile];
 
       if (sourceMap == null) {
-        result += '  [original] ' + stackLine;
+        result += '  [original] ' + stackLine + '\n';
         return;
       }
 

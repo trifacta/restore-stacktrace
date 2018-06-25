@@ -54,6 +54,8 @@ function restoreStacktrace(options) {
 
       if (sourceMap == null) {
         result += '  [original] ' + stackLine;
+        result += '\n';
+
         return;
       }
 
